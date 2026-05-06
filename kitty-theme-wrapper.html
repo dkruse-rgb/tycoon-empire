@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Kittycoon Empire</title>
+  <style>
+    :root {
+      --bg: #120f18;
+      --panel: rgba(34, 24, 45, 0.92);
+      --panel-2: rgba(255, 245, 250, 0.08);
+      --ink: #fff3f8;
+      --pink: #ff86b7;
+      --pink-deep: #ff5aa2;
+      --gold: #ffd86b;
+      --lav: #c9a7ff;
+      --line: rgba(255,255,255,0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255, 134, 183, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(201, 167, 255, 0.18), transparent 28%),
+        linear-gradient(180deg, #1b1422 0%, #100d15 100%);
+      overflow-x: hidden;
+    }
+
+    .paw-layer,
+    .sparkle-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .paw, .sparkle {
+      position: absolute;
+      opacity: 0.14;
+      user-select: none;
+      animation: floaty linear infinite;
+    }
+
+    .sparkle { opacity: 0.28; }
+
+    @keyframes floaty {
+      0% { transform: translateY(110vh) translateX(0) rotate(0deg); }
+      100% { transform: translateY(-15vh) translateX(24px) rotate(360deg); }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 2px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius: 24px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.28);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "🐾";
+      position: absolute;
+      font-size: 62px;
+      opacity: 0.08;
+      transform: rotate(-18deg);
+    }
+
+    .hero::before { top: -8px; right: 18px; }
+    .hero::after  { bottom: -10px; left: 18px; }
+
+    .hero-top {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: clamp(32px, 6vw, 58px);
+      line-height: 0.95;
+      letter-spacing: 1px;
+      color: var(--gold);
+      text-shadow: 0 3px 0 rgba(255, 90, 162, 0.45);
+    }
+
+    .title-block h1 .kitty {
+      color: var(--pink);
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #ffd9ea;
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .badge {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .frame {
+      border: 3px solid rgba(255, 216, 107, 0.45);
+      border-radius: 28px;
+      padding: 14px;
+      background: linear-gradient(180deg, rgba(255, 134, 183, 0.15), rgba(201, 167, 255, 0.10));
+      box-shadow: 0 20px 60px rgba(0,0,0,0.32);
+    }
+
+    .frame-inner {
+      border-radius: 22px;
+      overflow: hidden;
+      background: #0f1115;
+      border: 2px solid rgba(255,255,255,0.10);
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: min(82vh, 1600px);
+      border: 0;
+      background: #0f1115;
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      text-align: center;
+      color: #f3d6e8;
+      font-size: 13px;
+      opacity: 0.92;
+    }
+
+    .corner-cat {
+      position: fixed;
+      bottom: 10px;
+      right: 12px;
+      z-index: 2;
+      font-size: clamp(42px, 8vw, 78px);
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      .wrap { padding: 10px; }
+      .hero { padding: 16px; border-radius: 18px; }
+      .frame { padding: 8px; border-radius: 18px; }
+      .frame-inner { border-radius: 14px; }
+      iframe { height: 84vh; }
+      .badge { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="paw-layer" id="pawLayer"></div>
+  <div class="sparkle-layer" id="sparkleLayer"></div>
+
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-top">
+        <div class="title-block">
+          <h1><span class="kitty">Kitty</span>coon Empire 🐱</h1>
+          <div class="subtitle">All the tycoon goodness — now wrapped in a cozy kitty-themed shell.</div>
+          <div class="badge-row">
+            <div class="badge">🐾 Kitty Theme</div>
+            <div class="badge">🎀 Cute Wrapper</div>
+            <div class="badge">🚫 No Reset Button</div>
+            <div class="badge">💸 Same Empire Gameplay</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="frame">
+      <div class="frame-inner">
+        <iframe src="./index-no-reset.html" title="Kittycoon Empire Game"></iframe>
+      </div>
+    </section>
+
+    <div class="footer-note">If you want, I can also turn the businesses, buttons, and upgrade cards themselves into a full kitty-styled UI next.</div>
+  </div>
+
+  <div class="corner-cat">🐈</div>
+
+  <script>
+    const pawLayer = document.getElementById('pawLayer');
+    const sparkleLayer = document.getElementById('sparkleLayer');
+
+    function spawn(layer, symbol, count, sizeMin, sizeMax, durationMin, durationMax) {
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = symbol === '🐾' ? 'paw' : 'sparkle';
+        el.textContent = symbol;
+        const size = Math.random() * (sizeMax - sizeMin) + sizeMin;
+        const left = Math.random() * 100;
+        const delay = Math.random() * -18;
+        const duration = Math.random() * (durationMax - durationMin) + durationMin;
+        el.style.left = left + 'vw';
+        el.style.fontSize = size + 'px';
+        el.style.animationDuration = duration + 's';
+        el.style.animationDelay = delay + 's';
+        layer.appendChild(el);
+      }
+    }
+
+    spawn(pawLayer, '🐾', 14, 18, 38, 16, 28);
+    spawn(sparkleLayer, '✨', 18, 10, 22, 10, 20);
+  </script>
+</body>
+</html>
