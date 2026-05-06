@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tycoon Empire</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0f1115; color: #f3ead3; font-family: system-ui, sans-serif; }
+</style>
+</head>
+<body>
+  <p>Loading Tycoon Empire...</p>
+  <script>
+    fetch('https://raw.githubusercontent.com/dkruse-rgb/tycoon-empire/39dbf4ad8f0e9bed46abeb653db044e1214ad562/index.html')
+      .then(response => response.text())
+      .then(html => {
+        html = html.replace('</head>', '<style>.reset-btn,#resetBtn{display:none!important;visibility:hidden!important;pointer-events:none!important;}</style></head>');
+        html = html.replace(/\s*<button class="reset-btn" id="resetBtn">RESET<\/button>/, '');
+        html = html.replace(/\s*\/\/ ===== RESET =====[\s\S]*?\n\s*}\);\s*(?=\n\s*\/\/)/, '\n');
+        document.open();
+        document.write(html);
+        document.close();
+      })
+      .catch(() => {
+        document.body.innerHTML = '<p>Tycoon Empire could not load. Please refresh.</p>';
+      });
+  </script>
+</body>
+</html>
